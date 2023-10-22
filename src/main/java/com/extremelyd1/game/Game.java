@@ -175,11 +175,6 @@ public class Game {
         Bukkit.getPluginManager().registerEvents(new DamageListener(this), plugin);
         Bukkit.getPluginManager().registerEvents(new FoodListener(this), plugin);
         Bukkit.getPluginManager().registerEvents(new MoveListener(this), plugin);
-
-        // Register events for correctly handling nether portal with offset borders
-        if (config.isBorderEnabled()) {
-            Bukkit.getPluginManager().registerEvents(new WorldListener(this), plugin);
-        }
     }
 
     /**
@@ -188,7 +183,7 @@ public class Game {
      */
     private void registerCommands(JavaPlugin plugin) {
         final Game game = this;
-        final Map<String, CommandExecutor> executors = new HashMap<String, CommandExecutor>() {{
+        final Map<String, CommandExecutor> executors = new HashMap<>() {{
             put("team", new TeamCommand(game));
             put("start", new StartCommand(game));
             put("end", new EndCommand(game));
@@ -205,12 +200,6 @@ public class Game {
             put("channel", new ChannelCommand(game));
             put("teamchat", new TeamChatCommand(game));
             put("join", new JoinCommand(game));
-
-            if (config.isPreGenerateWorlds()) {
-                put("generate", new GenerateCommand(game));
-            } else {
-                put("generate", new DisabledCommand());
-            }
         }};
 
         for (String cmdName : executors.keySet()) {
@@ -250,14 +239,7 @@ public class Game {
         }
 
         // Calculate radius of spawn circle based on whether a border is enabled
-        int radius;
-        if (config.isBorderEnabled()) {
-            // A point on the circle is at most as far away from the border as from the center
-            radius = Math.round(config.getOverworldBorderSize() / 4f);
-        } else {
-            // Base radius of 200, with an increase of 100 per team
-            radius = 200 + 100 * teamManager.getNumActiveTeams();
-        }
+        int radius = 500 + 300 * teamManager.getNumActiveTeams();
 
         // Gather locations to spread teams
         List<Location> locations = LocationUtil.getRandomCircleLocations(

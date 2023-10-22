@@ -48,20 +48,6 @@ public class Config {
     private final boolean notifyOtherTeamCompletions;
 
     /**
-     * Whether a world border is enabled
-     */
-    private final boolean borderEnabled;
-    /**
-     * The size of the world border
-     */
-    private final int overworldBorderSize;
-
-    /**
-     * The size of the nether border
-     */
-    private final int netherBorderSize;
-
-    /**
      * Whether to prevent teams from spawning in water
      */
     private final boolean preventWaterSpawns;
@@ -91,26 +77,13 @@ public class Config {
     private long timerLength;
 
     /**
-     * Whether to pre-generate the worlds within the border in advance
-     */
-    private final boolean preGenerateWorlds;
-    /**
-     * The number of ticks in between generation cycles
-     */
-    private final int preGenerationTicksPerCycle;
-    /**
-     * The number of chunks to generate per cycle
-     */
-    private final int preGenerationChunksPerCycle;
-
-    /**
      * The radius of the pregame border
      */
     private final int preGameBorderRadius;
 
     public Config(JavaPlugin plugin) throws IllegalArgumentException {
         plugin.saveDefaultConfig();
-        
+
         FileConfiguration config = plugin.getConfig();
 
         enableBlacklist = config.getBoolean("enable-blacklist");
@@ -146,23 +119,8 @@ public class Config {
 
         progressController = new ProgressController(config);
 
-        borderEnabled = config.getBoolean("border.enable");
-        overworldBorderSize = config.getInt("border.overworld-size");
-        netherBorderSize = config.getInt("border.nether-size");
-
-        if (overworldBorderSize < netherBorderSize) {
-            throw new IllegalArgumentException("Nether border should be at most as large as the overworld border size");
-        }
-
         timerEnabled = config.getBoolean("timer.enable");
         timerLength = config.getInt("timer.length");
-
-        // Only allow pregeneration of worlds if there is the border is enabled
-        preGenerateWorlds = borderEnabled && config.getBoolean("pregeneration-mode.enable");
-
-        preGenerationTicksPerCycle = config.getInt("pregeneration-mode.ticks-per-cycle");
-
-        preGenerationChunksPerCycle = config.getInt("pregeneration-mode.chunks-per-cycle");
 
         preGameBorderRadius = config.getInt("pregame.border-radius");
     }
@@ -246,18 +204,6 @@ public class Config {
         return giveAllRecipes;
     }
 
-    public boolean isBorderEnabled() {
-        return borderEnabled;
-    }
-
-    public int getOverworldBorderSize() {
-        return overworldBorderSize;
-    }
-
-    public int getNetherBorderSize() {
-        return netherBorderSize;
-    }
-
     public boolean isTimerEnabled() {
         return timerEnabled;
     }
@@ -272,18 +218,6 @@ public class Config {
 
     public void setTimerLength(long timerLength) {
         this.timerLength = timerLength;
-    }
-
-    public boolean isPreGenerateWorlds() {
-        return preGenerateWorlds;
-    }
-
-    public int getPreGenerationTicksPerCycle() {
-        return preGenerationTicksPerCycle;
-    }
-
-    public int getPreGenerationChunksPerCycle() {
-        return preGenerationChunksPerCycle;
     }
 
     public int getPreGameBorderRadius() {

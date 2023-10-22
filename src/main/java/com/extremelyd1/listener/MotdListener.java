@@ -26,12 +26,6 @@ public class MotdListener implements Listener {
                             + ChatColor.DARK_RED + "\nUnable to join"
             );
             e.setMaxPlayers(0);
-        } else if (game.getConfig().isPreGenerateWorlds()) {
-            e.setMotd(
-                    Game.PREFIX + ChatColor.WHITE + "Pregenerating worlds"
-                            + ChatColor.DARK_RED + "\nUnable to join"
-            );
-            e.setMaxPlayers(0);
         } else {
             e.setMotd(
                     Game.PREFIX + ChatColor.WHITE + game.getState().getName()

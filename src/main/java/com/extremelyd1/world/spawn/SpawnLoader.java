@@ -91,14 +91,8 @@ public class SpawnLoader implements Listener {
                 // Decide search width based on whether a border is enabled
                 // In case of a border, use half of the border size as search radius
                 // since the spawns start between border center and border wall
-                int searchWidth = this.game.getConfig().isBorderEnabled()
-                        ? this.game.getConfig().getOverworldBorderSize() / 2 / 16
-                        : MAX_SEARCH_WIDTH;
 
-                SpawnFindThread findThread = new SpawnFindThread(
-                        this.locations.get(i),
-                        searchWidth
-                );
+                SpawnFindThread findThread = new SpawnFindThread(this.locations.get(i), MAX_SEARCH_WIDTH);
 
                 findThread.start();
 
